@@ -1,0 +1,11 @@
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "react/no-unknown-property": "error",
+    "react/no-unescaped-entities": "off",
+    "no-console": "error",
+    "semi": ["error", "always"],
+    "indent": ["error", 2],
+    "no-trailing-spaces": "error"
+  }
+}
