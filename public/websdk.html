@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charSet="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <script src="https://dev-cockpit.sumsub.com/idensic/static/sns-websdk-builder.js"></script>
+</head>
+
+<body>
+<div>
+    <form>
+        <div><label for="accessToken">Access Token</label><input id="accessToken" type="text" value="" /></div>
+        <div><label for="baseUrl">Base URL</label><input id="baseUrl" type="text" value="https://api.sumsub.com" /></div>
+        <div><label for="config">Config</label><textarea id="config">{}</textarea></div>
+        <div><label for="options">Options</label><textarea id="options">{}</textarea></div>
+        <button type="button" onClick="handleInputChanged()">Launch</button>
+    </form>
+</div>
+<div id="sumsub-websdk-container"></div>
+
+<script>
+  const accessTokenElement = document.querySelector('#accessToken')
+  const baseUrlElement = document.querySelector('#baseUrl')
+  const configElement = document.querySelector('#config')
+  const optionsElement = document.querySelector('#options')
+
+  function getJsonFromStr(string) {
+    try {
+      return JSON.parse(string)
+    } catch {
+      return {}
+    }
+  }
+
+  function handleInputChanged() {
+    if (!accessTokenElement.value) {
+      return
+    }
+    launchWebSdk(
+      accessTokenElement.value,
+      baseUrlElement.value || null,
+      getJsonFromStr(configElement.value),
+      getJsonFromStr(optionsElement.value)
+    )
+  }
+
+  function launchWebSdk(accessToken, baseUrl, config, options) {
+    let snsWebSdkInstance = snsWebSdk.init(
+      accessToken,
+      () => Promise.resolve(prompt('Enter the new access token:')),
+    )
+      .withBaseUrl(baseUrl || 'https://api.sumsub.com')
+      .withConf(config)
+      .withOptions(options)
+      .build()
+    snsWebSdkInstance.launch('#sumsub-websdk-container')
+  }
+</script>
+</body>
+</html>
